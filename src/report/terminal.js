@@ -1,6 +1,6 @@
 // Terminal report — the screenshot surface. Plain language, no theater.
 import os from 'node:os';
-import { EXPOSURES } from '../engine.js';
+import { EXPOSURES, actionsFor } from '../engine.js';
 import { redact } from '../redact.js';
 
 const TTY = process.stdout.isTTY && !process.env.NO_COLOR;
@@ -57,6 +57,7 @@ export function render(result) {
       if (f.origin && f.origin.ref) lines.push(dim(`      origin: ${f.origin.type} · ${redact(f.origin.ref)}`));
       for (const s of f.secrets) lines.push(yellow(`      credential: "${s.key}" — ${s.shape}`) + dim(` · ${s.file}`));
       for (const n of f.notes) lines.push(dim(`      note: ${redact(n)}`));
+      for (const a of actionsFor(f)) lines.push(green('      fix: ') + dim(redact(a)));
     }
     lines.push('');
   }

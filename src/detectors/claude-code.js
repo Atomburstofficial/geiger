@@ -47,9 +47,9 @@ export default {
     }
 
     // settings: hooks are standing command execution; apiKeyHelper runs a script
+    const projDirs = (ctx.paths && ctx.paths.length ? ctx.paths : [ctx.cwd]).filter(Boolean);
     for (const sf of [j(root, 'settings.json'), j(root, 'settings.local.json'),
-                      ctx.cwd ? j(ctx.cwd, '.claude', 'settings.json') : null,
-                      ctx.cwd ? j(ctx.cwd, '.claude', 'settings.local.json') : null].filter(Boolean)) {
+                      ...projDirs.flatMap((d) => [j(d, '.claude', 'settings.json'), j(d, '.claude', 'settings.local.json')])]) {
       const s = readJson(sf);
       if (!s.value) continue;
       const hooks = s.value.hooks || {};
@@ -73,8 +73,8 @@ export default {
       }
     }
 
-    // project-level .mcp.json
-    if (ctx.cwd) out.push(...findingsFromMcpFile(j(ctx.cwd, '.mcp.json'), 'claude-code', 'project .mcp.json'));
+    // project-level .mcp.json for every scanned path
+    for (const d of projDirs) out.push(...findingsFromMcpFile(j(d, '.mcp.json'), 'claude-code', 'project ' + d));
 
     // plugins / skills / agents inventories
     const inv = readJson(j(root, 'plugins', 'installed_plugins.json'));

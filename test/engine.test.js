@@ -76,3 +76,14 @@ test('tolerant parser: lone backslashes in hand-edited Windows configs', async (
   assert.ok(r.value.command.startsWith('C:'));
   assert.ok(r.value.command.includes('Users'));
 });
+
+test('remediation actions exist for hot findings', async () => {
+  const { actionsFor } = await import('../src/engine.js');
+  process.env.GEIGER_HOME = path.join(fixtures, 'home1');
+  process.env.GEIGER_PLATFORM = 'win32';
+  const r = await run(detectors, {});
+  const wrapped = r.findings.find((f) => f.name.startsWith('wrapped-server'));
+  const acts = actionsFor(wrapped);
+  assert.ok(acts.length >= 2, 'mcp server with secret gets multiple actions');
+  assert.ok(acts.some((a) => a.includes('Rotate')), 'secret rotation advised');
+});

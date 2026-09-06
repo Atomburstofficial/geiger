@@ -103,6 +103,23 @@ export function assessMcpServer(name, server, file, detector, hostLabel) {
   });
 }
 
+/** Plain-language remediation guidance derived from what a finding is. */
+export function actionsFor(f) {
+  const acts = [];
+  const file = (f.evidence[0] && f.evidence[0].file) || 'its config file';
+  if (f.kind === 'mcp-server') {
+    acts.push(`If you don't recognize "${f.name.split(' (')[0]}", remove its entry from ${file}.`);
+    if (f.origin.type === 'registry' && f.origin.ref) acts.push(`If you keep it, pin an exact version instead of a floating tag (${f.origin.ref}).`);
+    if (f.origin.type === 'remote') acts.push('Remote server: confirm who operates it — its behavior can change server-side without warning.');
+  }
+  if (f.exposures.includes('UNKNOWN-ORIGIN')) acts.push('Trace the local script to a source you trust, or replace it with a published, reviewable package.');
+  if (f.secrets.length) acts.push('Rotate the credential(s) listed here and move them out of plaintext config — use your platform\'s secret storage or an env manager.');
+  if (f.kind === 'hook') acts.push(`Read each hook command in ${file} — they run automatically, so treat them like cron jobs.`);
+  if (f.kind === 'plugin') acts.push('Uninstall plugins you no longer use; each one is its own supply chain.');
+  if (f.kind === 'extension' && f.exposures.includes('BROAD-WEB')) acts.push('This extension can read every site you visit — remove it unless that trade is deliberate.');
+  return acts;
+}
+
 /**
  * Run all detectors. Returns { findings, diagnostics, meta }.
  * @param {Array<{id:string, name:string, run:(ctx:object)=>Finding[]}>} detectors

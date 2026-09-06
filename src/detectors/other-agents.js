@@ -12,6 +12,11 @@ const AGENT_HOMES = [
   { dir: '.aider', name: 'Aider', ref: 'aider-chat (pip)', config: null },
   { dir: '.opencode', name: 'OpenCode', ref: 'opencode', config: null },
   { dir: '.qwen', name: 'Qwen Code', ref: '@qwen-code/qwen-code', config: 'settings.json' },
+  { dir: '.continue', name: 'Continue', ref: 'continue.dev', config: 'config.json' },
+  { dir: '.copilot', name: 'GitHub Copilot CLI', ref: '@github/copilot', config: null },
+  { dir: '.interpreter', name: 'Open Interpreter', ref: 'open-interpreter (pip)', config: null },
+  { dir: '.lmstudio', name: 'LM Studio', ref: 'lmstudio.ai', config: null },
+  { dir: '.ollama', name: 'Ollama', ref: 'ollama.com', config: null },
 ];
 
 // DeepSeek Harness home is not fixed in upstream docs yet; check candidates
@@ -62,6 +67,17 @@ export default {
           evidence: [{ file: j(h, n), note: 'config file' }],
         });
       }
+    }
+
+    for (const [dir, name, ref] of [[j(appData(), 'goose'), 'Goose', 'block/goose'], [j(h, '.config', 'goose'), 'Goose', 'block/goose'], [j(h, '.config', 'open-interpreter'), 'Open Interpreter', 'open-interpreter (pip)']]) {
+      if (!isDir(dir)) continue;
+      if (out.some((f) => f.name === name)) continue;
+      out.push({
+        detector: 'other-agents', kind: 'agent', name,
+        origin: { type: 'registry', ref },
+        exposures: ['EXECUTES', 'BROAD-FILESYSTEM', 'NETWORK'],
+        evidence: [{ file: dir, note: 'agent config directory' }],
+      });
     }
 
     for (const cand of dshCandidates(h)) {
