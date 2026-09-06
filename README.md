@@ -57,8 +57,8 @@ Real output from a real machine (values redacted — see below).
 | Ecosystem | What geiger reads |
 |---|---|
 | **Claude Code** | global + per-project MCP servers, hooks, plugins, skills, subagents, `apiKeyHelper` |
-| **MCP hosts** | Claude Desktop, Cursor, Windsurf, VS Code user-level MCP configs |
-| **Other agents** | Codex CLI, Gemini CLI, Aider, OpenCode, Qwen Code, DeepSeek Harness |
+| **MCP hosts** | Claude Desktop, Cursor, Windsurf, VS Code (user + project), Cline, Roo Code, Continue, Zed |
+| **Other agents** | Codex CLI, Gemini CLI, Aider, OpenCode, Qwen Code, DeepSeek Harness, Continue, GitHub Copilot CLI, Goose, Open Interpreter, LM Studio, Ollama |
 | **Editor extensions** | AI extensions in VS Code / Insiders / Cursor |
 | **Global CLIs** | agent packages in global npm roots (read directly — npm is never executed) |
 | **Browser extensions** | AI extensions in Chrome / Edge / Brave profiles, with their manifest permissions |
@@ -87,10 +87,23 @@ real server behind the wrapper.
 ## Usage
 
 ```
-npx geiger-scan                    scan, print the report
-npx geiger-scan --json out.json    also write machine-readable findings (schemaVersion 1)
-npx geiger-scan --strict           exit 2 if anything can execute code or holds secrets
+npx geiger-scan                        scan, print the report
+npx geiger-scan --html report.html     self-contained HTML report with per-finding
+                                       "what to do" remediation guidance
+npx geiger-scan --json out.json        machine-readable findings (schemaVersion 1)
+npx geiger-scan --path D:\repo1 --path E:\repo2
+                                       also scan these project directories for
+                                       project-level agent and MCP configs
+npx geiger-scan --home C:\Users\other  scan a different home root (another user
+                                       profile, a mounted image)
+npx geiger-scan --strict               exit 2 if anything can execute code or
+                                       holds secrets
 ```
+
+No npm? `npx github:Atomburstofficial/geiger` runs straight from the repo.
+
+Every finding that warrants action carries plain-language remediation — as
+`fix:` lines in the terminal and "What to do" blocks in the HTML report.
 
 Fleet pattern (MSPs, IT): run with `--json` per machine, collect the files,
 diff over time. The schema is versioned and stable.
