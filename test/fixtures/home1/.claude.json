@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "wrapped-server": {
+      "command": "C:\\Program Files\\PolicyAgent\\wrap.exe",
+      "args": [
+        "--mcp-wrap",
+        "--",
+        "npx",
+        "-y",
+        "@example/mcp-thing"
+      ],
+      "env": {
+        "API_KEY": "sk-ant-fixture00000000000000000000"
+      }
+    },
+    "local-script": {
+      "command": "python",
+      "args": [
+        "C:\\scripts\\my_server.py"
+      ]
+    },
+    "remote": {
+      "url": "https://mcp.example.com/sse"
+    }
+  },
+  "projects": {}
+}

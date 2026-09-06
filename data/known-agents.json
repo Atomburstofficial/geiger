@@ -1,0 +1,32 @@
+{
+  "comment": "Community-updatable identification data. PRs welcome — see CONTRIBUTING.md.",
+  "vscodeExtensions": {
+    "anthropic.claude-code": "Claude Code (VS Code)",
+    "openai.chatgpt": "ChatGPT / Codex (VS Code)",
+    "github.copilot": "GitHub Copilot",
+    "github.copilot-chat": "GitHub Copilot Chat",
+    "continue.continue": "Continue",
+    "saoudrizwan.claude-dev": "Cline",
+    "rooveterinaryinc.roo-cline": "Roo Code",
+    "codeium.codeium": "Codeium",
+    "tabnine.tabnine-vscode": "Tabnine",
+    "amazonwebservices.amazon-q-vscode": "Amazon Q",
+    "google.geminicodeassist": "Gemini Code Assist",
+    "sourcegraph.cody-ai": "Sourcegraph Cody",
+    "deepseek-ai.dsh": "DeepSeek Harness (VS Code)"
+  },
+  "npmGlobalAgents": {
+    "@anthropic-ai/claude-code": "Claude Code CLI",
+    "@openai/codex": "Codex CLI",
+    "@deepseek-ai/dsh": "DeepSeek Harness",
+    "@google/gemini-cli": "Gemini CLI",
+    "@qwen-code/qwen-code": "Qwen Code",
+    "opencode-ai": "OpenCode",
+    "aider-js": "Aider (js)"
+  },
+  "browserExtensionNames": [
+    "chatgpt", "claude", "copilot", "gemini", "deepseek", "perplexity",
+    "monica", "sider", "merlin", "harpa", "openai", "grok", "ai assistant",
+    "writesonic", "jasper", "compose ai", "wiseone", "maxai"
+  ]
+}

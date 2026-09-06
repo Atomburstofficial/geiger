@@ -1,0 +1,4 @@
+model = "gpt-5"
+[mcp_servers.sample]
+command = "npx"
+api_key = "sk-fixturefixturefixturefixture00"

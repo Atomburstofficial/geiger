@@ -1,0 +1,1 @@
+{ "version": 2, "plugins": { "test-plugin@some-marketplace": [{ "scope": "user", "installPath": "/tmp/x", "version": "1.0.0" }] } }
