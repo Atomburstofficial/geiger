@@ -1,0 +1,41 @@
+name: New detector request
+description: An agent, MCP host, or AI tool that geiger should detect but doesn't
+labels: [detector]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Detectors are small and data-driven — this is the contribution the
+        project is built for. If you'd rather send a PR yourself, see
+        [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+  - type: input
+    id: name
+    attributes:
+      label: Tool name and homepage
+      placeholder: "ExampleAgent — https://example.dev"
+    validations:
+      required: true
+  - type: textarea
+    id: paths
+    attributes:
+      label: Where its config lives
+      description: "Paths per OS, e.g. `~/.exampleagent/config.json` (macOS/Linux), `%APPDATA%\\ExampleAgent\\config.json` (Windows)."
+    validations:
+      required: true
+  - type: textarea
+    id: shape
+    attributes:
+      label: Config shape
+      description: The structure of the config (keys that declare MCP servers, commands, API keys…), with every value replaced by placeholders.
+      render: json
+  - type: dropdown
+    id: exposure
+    attributes:
+      label: What can it do?
+      multiple: true
+      options:
+        - Executes commands
+        - Reads broad filesystem
+        - Holds credentials in config
+        - Talks to the network
+        - Sees browsing (extension)

@@ -1,0 +1,35 @@
+name: Bug report
+description: A scan crashed, missed something it should see, or reported something wrong
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks — scan output is designed to be safe to paste (values are
+        redacted by shape), but give it a once-over anyway before posting.
+  - type: input
+    id: env
+    attributes:
+      label: OS and Node version
+      placeholder: "Windows 11 / Node 20.11"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did geiger do, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant scan output
+      description: Paste the relevant part of the report — including any lines from "detector diagnostics".
+      render: text
+  - type: textarea
+    id: config
+    attributes:
+      label: Config shape (if the bug is a parse/detection miss)
+      description: The structure of the config file that was missed or misread, with every value replaced by placeholders.
+      render: json

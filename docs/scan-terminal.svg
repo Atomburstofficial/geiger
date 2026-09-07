@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 592" font-family="ui-monospace,'Cascadia Mono',Consolas,Menlo,monospace" font-size="13.5">
+  <defs>
+    <clipPath id="r"><rect width="940" height="592" rx="14"/></clipPath>
+  </defs>
+  <g clip-path="url(#r)">
+    <rect width="940" height="592" fill="#0D0F13"/>
+    <rect width="940" height="40" fill="#14171D"/>
+    <circle cx="24" cy="20" r="5.5" fill="#2A2F38"/>
+    <circle cx="44" cy="20" r="5.5" fill="#2A2F38"/>
+    <circle cx="64" cy="20" r="5.5" fill="#2A2F38"/>
+    <text x="86" y="24.5" fill="#838B99" font-size="12">npx geiger-scan</text>
+    <g xml:space="preserve">
+      <text x="42" y="76"><tspan fill="#EDEEF2" font-weight="700">GEIGER</tspan><tspan fill="#697180">  ·  a Geiger counter for AI agents</tspan></text>
+      <text x="42" y="98"><tspan fill="#697180">machine dev-laptop  ·  read-only · no telemetry</tspan></text>
+      <text x="42" y="120"><tspan fill="#3A404B">────────────────────────────────────────────────────────</tspan></text>
+      <text x="42" y="152"><tspan fill="#EDEEF2" font-weight="700">10</tspan><tspan fill="#A6ADBB"> findings across 3 ecosystems  ·  </tspan><tspan fill="#FF7A85">8</tspan><tspan fill="#A6ADBB"> can execute code  ·  </tspan><tspan fill="#FFD166">1</tspan><tspan fill="#A6ADBB"> credential in configs</tspan></text>
+      <text x="42" y="188"><tspan fill="#00E5FF" font-weight="700">claude-code</tspan><tspan fill="#697180">  (6)</tspan></text>
+      <text x="58" y="210"><tspan fill="#EDEEF2" font-weight="700">magic</tspan><tspan fill="#697180">  MCP server</tspan></text>
+      <text x="74" y="232"><tspan fill="#FF7A85">[EXECUTES]</tspan><tspan fill="#FFD166"> [HOLDS-SECRETS]</tspan><tspan fill="#FFD166"> [BROAD-FILESYSTEM]</tspan></text>
+      <text x="74" y="254"><tspan fill="#697180">origin: registry · @21st-dev/magic@latest</tspan></text>
+      <text x="74" y="276"><tspan fill="#FFD166">credential: "API_KEY"</tspan><tspan fill="#697180"> — shape reported, value never shown</tspan></text>
+      <text x="74" y="298"><tspan fill="#697180">note: wrapped by a policy agent (domainguard-agent.exe)</tspan></text>
+      <text x="74" y="320"><tspan fill="#7BE3A0">fix:</tspan><tspan fill="#697180"> pin an exact version · rotate the key out of plaintext</tspan></text>
+      <text x="58" y="350"><tspan fill="#EDEEF2" font-weight="700">hooks: UserPromptSubmit, PreToolUse</tspan><tspan fill="#697180">  hook</tspan></text>
+      <text x="74" y="372"><tspan fill="#FF7A85">[EXECUTES]</tspan><tspan fill="#697180">  runs without a prompt each time its event fires</tspan></text>
+      <text x="42" y="408"><tspan fill="#00E5FF" font-weight="700">mcp-hosts</tspan><tspan fill="#697180">  (2)</tspan></text>
+      <text x="58" y="430"><tspan fill="#EDEEF2" font-weight="700">local-tools (Cursor · global)</tspan><tspan fill="#697180">  MCP server</tspan></text>
+      <text x="74" y="452"><tspan fill="#FF7A85">[EXECUTES]</tspan><tspan fill="#FF7A85"> [UNKNOWN-ORIGIN]</tspan><tspan fill="#697180">  a local script, no registry trail</tspan></text>
+      <text x="74" y="474"><tspan fill="#7BE3A0">fix:</tspan><tspan fill="#697180"> if you don't recognize it, remove it from ~/.cursor/mcp.json</tspan></text>
+      <text x="42" y="510"><tspan fill="#00E5FF" font-weight="700">browser-extensions</tspan><tspan fill="#697180">  (1)</tspan></text>
+      <text x="58" y="532"><tspan fill="#EDEEF2" font-weight="700">AI sidebar (Edge)</tspan><tspan fill="#697180">  extension  </tspan><tspan fill="#FFD166">[BROAD-WEB]</tspan><tspan fill="#697180">  sees every site you visit</tspan></text>
+      <text x="42" y="566"><tspan fill="#697180">every finding: origin · exposure · evidence path · plain-language fix</tspan></text>
+    </g>
+    <rect x="0.5" y="0.5" width="939" height="591" rx="14" fill="none" stroke="#2A2F38"/>
+  </g>
+</svg>

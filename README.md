@@ -1,5 +1,11 @@
 # geiger
 
+[![CI](https://github.com/Atomburstofficial/geiger/actions/workflows/ci.yml/badge.svg)](https://github.com/Atomburstofficial/geiger/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/geiger-scan)](https://www.npmjs.com/package/geiger-scan)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![node ≥18](https://img.shields.io/badge/node-%E2%89%A518-brightgreen)
+![dependencies: 0](https://img.shields.io/badge/dependencies-0-success)
+
 **A Geiger counter for AI agents.**
 
 One read-only command that inventories every AI agent, harness, MCP server,
@@ -12,6 +18,8 @@ npx geiger-scan
 
 No install. No account. No telemetry. Reads configs and directories, writes
 nothing (unless you ask for `--json yourfile.json`).
+
+![A geiger scan: findings grouped by ecosystem with exposure labels, a redacted credential, and plain-language fixes](docs/scan-terminal.svg)
 
 ## Why this exists
 
@@ -142,5 +150,7 @@ either way.
 
 ## License
 
-[MIT](LICENSE) · built by [Atomburst](https://atomburst.io) · zero runtime
-dependencies, no build step — the source you read is the code that runs.
+[MIT](LICENSE) · built by
+[Atomburst](https://atomburst.io/geiger?utm_source=github&utm_medium=readme) ·
+zero runtime dependencies, no build step — the source you read is the code
+that runs.
