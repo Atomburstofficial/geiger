@@ -139,7 +139,10 @@ labels — the thing you need *before* any audit means anything.
 
 **Why should I trust a security company's free scanner?** Read it. It's a
 few hundred lines of dependency-free JavaScript, and what's published is
-what runs.
+what runs — releases are published from GitHub Actions with [npm
+provenance](https://docs.npmjs.com/generating-provenance-statements), so the
+npm page carries a signed link to the exact public commit each version was
+built from.
 
 **What do I do about what it finds?** Individually: remove what you don't
 recognize, rotate credentials that shouldn't be sitting in configs. At a

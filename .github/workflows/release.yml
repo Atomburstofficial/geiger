@@ -1,0 +1,23 @@
+name: release
+# Publishes to npm via Trusted Publishing (OIDC) when a v* tag is pushed.
+# No tokens live in this repo or its secrets; npmjs.com is configured to
+# trust exactly this workflow. --provenance links the published tarball to
+# the public commit it was built from.
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+  id-token: write # OIDC — required for trusted publishing + provenance
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest # OIDC exchange needs npm >= 11.5.1
+      - run: npm test
+      - run: npm publish --provenance --access public
