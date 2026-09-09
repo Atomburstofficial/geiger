@@ -7,7 +7,7 @@ on:
   push:
     tags: ['v*']
 permissions:
-  contents: read
+  contents: write # create the GitHub Release for the tag
   id-token: write # OIDC — required for trusted publishing + provenance
 jobs:
   publish:
@@ -21,3 +21,16 @@ jobs:
       - run: npm install -g npm@latest # OIDC exchange needs npm >= 11.5.1
       - run: npm test
       - run: npm publish --provenance --access public
+      - name: create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 && exit 0
+          NOTES="docs/release-notes-$GITHUB_REF_NAME.md"
+          if [ -f "$NOTES" ]; then
+            TITLE=$(head -1 "$NOTES" | sed 's/^# //')
+            tail -n +2 "$NOTES" > /tmp/notes.md
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "$TITLE" --notes-file /tmp/notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --generate-notes
+          fi
