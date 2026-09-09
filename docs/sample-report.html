@@ -1,0 +1,100 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Geiger report — Test-Machine-01</title>
+<style>
+  :root{color-scheme:dark}
+  body{margin:0;background:#0a0b0e;color:#edeef2;font:15px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif;padding:40px 20px}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-size:22px;letter-spacing:.02em;margin:0 0 4px}
+  h2{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:#7fe9ff;margin:34px 0 10px}
+  h2 small{color:#838b99;font-weight:400;text-transform:none}
+  .sub{color:#838b99;font-size:13px;margin-bottom:26px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:22px 0}
+  .tile{border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:14px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01))}
+  .tile b{font-size:22px;display:block}
+  .tile span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#838b99}
+  .card{border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:14px 16px;margin:10px 0;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01))}
+  .fh{margin-bottom:6px}
+  .kind{font-size:11px;color:#838b99;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:1px 8px;margin-left:6px}
+  .meta{color:#a6adbb;font-size:13px;margin-top:4px}
+  .secret{color:#e8a33d;font-size:13px;margin-top:4px}
+  .acts{margin-top:10px;border-top:1px solid rgba(255,255,255,.08);padding-top:8px;font-size:13px;color:#a6adbb}
+  .acts ul{margin:4px 0 0 18px;padding:0}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#c9d2de;word-break:break-all}
+  .legend{border:1px dashed rgba(255,255,255,.15);border-radius:12px;padding:12px 16px;margin-top:30px;font-size:13px;color:#a6adbb}
+  footer{margin-top:26px;color:#838b99;font-size:12px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px}
+</style></head><body><div class="wrap">
+<h1>GEIGER <span style="color:#838b99;font-weight:400">· a Geiger counter for AI agents</span></h1>
+<div class="sub">machine Test-Machine-01 · 2026-09-09T14:41:02.545Z · schemaVersion 1 · read-only · no telemetry</div>
+<div class="tiles">
+  <div class="tile"><b>7</b><span>findings</span></div>
+  <div class="tile"><b style="color:#ff7a6b">6</b><span>can execute code</span></div>
+  <div class="tile"><b style="color:#e8a33d">2</b><span>credentials in configs</span></div>
+  <div class="tile"><b>2</b><span>ecosystems</span></div>
+</div>
+
+
+    <h2>claude-code <small>(6)</small></h2>
+    <div class="card">
+        <div class="fh"><b>Claude Code</b> <span class="kind">agent</span></div>
+        <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">EXECUTES</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">BROAD-FILESYSTEM</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #8291a566;color:#8291a5;margin-right:4px">NETWORK</span></div>
+        <div class="meta">origin: registry · <code>@anthropic-ai/claude-code</code></div>
+        <div class="meta">evidence: <code>C:\Users\alex\.claude</code> — agent home directory</div>
+        
+        <div class="meta">note: a coding agent that runs shell commands as this user</div>
+        
+      </div><div class="card">
+        <div class="fh"><b>wrapped-server (Claude Code · global)</b> <span class="kind">mcp-server</span></div>
+        <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">EXECUTES</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">HOLDS-SECRETS</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">BROAD-FILESYSTEM</span></div>
+        <div class="meta">origin: registry · <code>@example/mcp-thing</code></div>
+        <div class="meta">evidence: <code>C:\Users\alex\.claude.json</code> — MCP server entry</div>
+        <div class="secret">credential: <code>API_KEY</code> — Anthropic API key · <code>C:\Users\alex\.claude.json</code></div>
+        <div class="meta">note: wrapped by a policy agent (wrap.exe) — enforcement layer in front of the server</div><div class="meta">note: fetched from a package registry when the agent starts it</div>
+        <div class="acts"><b>What to do</b><ul><li>If you don't recognize &quot;wrapped-server&quot;, remove its entry from C:\Users\alex\.claude.json.</li><li>If you keep it, pin an exact version instead of a floating tag (@example/mcp-thing).</li><li>Rotate the credential(s) listed here and move them out of plaintext config — use your platform's secret storage or an env manager.</li></ul></div>
+      </div><div class="card">
+        <div class="fh"><b>local-script (Claude Code · global)</b> <span class="kind">mcp-server</span></div>
+        <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">EXECUTES</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">BROAD-FILESYSTEM</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">UNKNOWN-ORIGIN</span></div>
+        <div class="meta">origin: local · <code>C:\scripts\my_server.py</code></div>
+        <div class="meta">evidence: <code>C:\Users\alex\.claude.json</code> — MCP server entry</div>
+        
+        <div class="meta">note: runs a local script — nothing ties it to a published, reviewable package</div>
+        <div class="acts"><b>What to do</b><ul><li>If you don't recognize &quot;local-script&quot;, remove its entry from C:\Users\alex\.claude.json.</li><li>Trace the local script to a source you trust, or replace it with a published, reviewable package.</li></ul></div>
+      </div><div class="card">
+        <div class="fh"><b>remote (Claude Code · global)</b> <span class="kind">mcp-server</span></div>
+        <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #8291a566;color:#8291a5;margin-right:4px">NETWORK</span></div>
+        <div class="meta">origin: remote · <code>https://mcp.example.com/sse</code></div>
+        <div class="meta">evidence: <code>C:\Users\alex\.claude.json</code> — MCP server entry</div>
+        
+        <div class="meta">note: remote MCP server — its behavior can change server-side at any time</div>
+        <div class="acts"><b>What to do</b><ul><li>If you don't recognize &quot;remote&quot;, remove its entry from C:\Users\alex\.claude.json.</li><li>Remote server: confirm who operates it — its behavior can change server-side without warning.</li></ul></div>
+      </div><div class="card">
+        <div class="fh"><b>hooks: PreToolUse</b> <span class="kind">hook</span></div>
+        <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">EXECUTES</span></div>
+        <div class="meta">origin: local · <code>C:\Users\alex\.claude\settings.json</code></div>
+        <div class="meta">evidence: <code>C:\Users\alex\.claude\settings.json</code> — shell commands that run automatically on agent events</div>
+        
+        <div class="meta">note: hooks execute without a prompt each time their event fires</div>
+        <div class="acts"><b>What to do</b><ul><li>Read each hook command in C:\Users\alex\.claude\settings.json — they run automatically, so treat them like cron jobs.</li></ul></div>
+      </div><div class="card">
+        <div class="fh"><b>test-plugin</b> <span class="kind">plugin</span></div>
+        <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">EXECUTES</span></div>
+        <div class="meta">origin: git · <code>some-marketplace</code></div>
+        <div class="meta">evidence: <code>/tmp/x</code> — installed Claude Code plugin v1.0.0</div>
+        
+        <div class="meta">note: plugins contribute commands, skills, and hooks to the agent</div>
+        <div class="acts"><b>What to do</b><ul><li>Uninstall plugins you no longer use; each one is its own supply chain.</li></ul></div>
+      </div>
+    <h2>other-agents <small>(1)</small></h2>
+    <div class="card">
+        <div class="fh"><b>Codex CLI</b> <span class="kind">agent</span></div>
+        <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">EXECUTES</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">HOLDS-SECRETS</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">BROAD-FILESYSTEM</span><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #8291a566;color:#8291a5;margin-right:4px">NETWORK</span></div>
+        <div class="meta">origin: registry · <code>@openai/codex</code></div>
+        <div class="meta">evidence: <code>C:\Users\alex\.codex</code> — agent home directory</div>
+        <div class="secret">credential: <code>(in config text)</code> — OpenAI-style key · <code>C:\Users\alex\.codex\config.toml</code></div>
+        <div class="meta">note: config declares MCP servers (partially parsed — review C:\Users\alex\.codex\config.toml)</div>
+        <div class="acts"><b>What to do</b><ul><li>Rotate the credential(s) listed here and move them out of plaintext config — use your platform's secret storage or an env manager.</li></ul></div>
+      </div>
+
+<div class="legend"><b>Exposure labels.</b> <div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">EXECUTES</span> can execute code or commands on this machine, on its own schedule or an agent's</div><div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">HOLDS-SECRETS</span> configuration contains credential-shaped values</div><div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">BROAD-FILESYSTEM</span> reaches the filesystem beyond a single project</div><div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #e8a33d66;color:#e8a33d;margin-right:4px">BROAD-WEB</span> can read or modify pages across all websites</div><div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #8291a566;color:#8291a5;margin-right:4px">NETWORK</span> talks to remote services</div><div><span style="display:inline-block;font-size:10px;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #ff7a6b66;color:#ff7a6b;margin-right:4px">UNKNOWN-ORIGIN</span> origin could not be traced to a known registry or store</div></div>
+<footer>Generated by geiger — reads configs and directories only; cannot see runtime behavior, obfuscated code, or other user accounts. Secret values are never included in this report. <a style="color:#7fe9ff" href="https://github.com/Atomburstofficial/geiger">github.com/Atomburstofficial/geiger</a></footer>
+</div></body></html>

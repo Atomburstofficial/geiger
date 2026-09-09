@@ -119,6 +119,16 @@ mental model as a lockfile: accept what's there, alarm on change.
 
 No npm? `npx github:Atomburstofficial/geiger` runs straight from the repo.
 
+## What the reports look like
+
+Before running anything, see exactly what you'd get: a
+[sample HTML report](docs/sample-report.html) and a
+[sample JSON output](docs/sample-report.json) live in this repo, generated
+from the test fixture — synthetic data, generic paths, credentials shown by
+shape only (as always). The HTML report:
+
+![The HTML report: summary tiles, exposure chips, credential shapes, and "What to do" remediation blocks](docs/sample-report.png)
+
 Every finding that warrants action carries plain-language remediation — as
 `fix:` lines in the terminal and "What to do" blocks in the HTML report.
 

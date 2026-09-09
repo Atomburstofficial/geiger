@@ -1,0 +1,203 @@
+{
+  "findings": [
+    {
+      "detector": "claude-code",
+      "kind": "agent",
+      "name": "Claude Code",
+      "origin": {
+        "type": "registry",
+        "ref": "@anthropic-ai/claude-code"
+      },
+      "exposures": [
+        "EXECUTES",
+        "BROAD-FILESYSTEM",
+        "NETWORK"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\alex\\.claude",
+          "note": "agent home directory"
+        }
+      ],
+      "secrets": [],
+      "confidence": "high",
+      "notes": [
+        "a coding agent that runs shell commands as this user"
+      ]
+    },
+    {
+      "detector": "claude-code",
+      "kind": "mcp-server",
+      "name": "wrapped-server (Claude Code · global)",
+      "origin": {
+        "type": "registry",
+        "ref": "@example/mcp-thing"
+      },
+      "exposures": [
+        "EXECUTES",
+        "HOLDS-SECRETS",
+        "BROAD-FILESYSTEM"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\alex\\.claude.json",
+          "note": "MCP server entry"
+        }
+      ],
+      "secrets": [
+        {
+          "key": "API_KEY",
+          "shape": "Anthropic API key",
+          "file": "C:\\Users\\alex\\.claude.json"
+        }
+      ],
+      "confidence": "high",
+      "notes": [
+        "wrapped by a policy agent (wrap.exe) — enforcement layer in front of the server",
+        "fetched from a package registry when the agent starts it"
+      ]
+    },
+    {
+      "detector": "claude-code",
+      "kind": "mcp-server",
+      "name": "local-script (Claude Code · global)",
+      "origin": {
+        "type": "local",
+        "ref": "C:\\scripts\\my_server.py"
+      },
+      "exposures": [
+        "EXECUTES",
+        "BROAD-FILESYSTEM",
+        "UNKNOWN-ORIGIN"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\alex\\.claude.json",
+          "note": "MCP server entry"
+        }
+      ],
+      "secrets": [],
+      "confidence": "high",
+      "notes": [
+        "runs a local script — nothing ties it to a published, reviewable package"
+      ]
+    },
+    {
+      "detector": "claude-code",
+      "kind": "mcp-server",
+      "name": "remote (Claude Code · global)",
+      "origin": {
+        "type": "remote",
+        "ref": "https://mcp.example.com/sse"
+      },
+      "exposures": [
+        "NETWORK"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\alex\\.claude.json",
+          "note": "MCP server entry"
+        }
+      ],
+      "secrets": [],
+      "confidence": "high",
+      "notes": [
+        "remote MCP server — its behavior can change server-side at any time"
+      ]
+    },
+    {
+      "detector": "claude-code",
+      "kind": "hook",
+      "name": "hooks: PreToolUse",
+      "origin": {
+        "type": "local",
+        "ref": "C:\\Users\\alex\\.claude\\settings.json"
+      },
+      "exposures": [
+        "EXECUTES"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\alex\\.claude\\settings.json",
+          "note": "shell commands that run automatically on agent events"
+        }
+      ],
+      "secrets": [],
+      "confidence": "high",
+      "notes": [
+        "hooks execute without a prompt each time their event fires"
+      ]
+    },
+    {
+      "detector": "claude-code",
+      "kind": "plugin",
+      "name": "test-plugin",
+      "origin": {
+        "type": "git",
+        "ref": "some-marketplace"
+      },
+      "exposures": [
+        "EXECUTES"
+      ],
+      "evidence": [
+        {
+          "file": "/tmp/x",
+          "note": "installed Claude Code plugin v1.0.0"
+        }
+      ],
+      "secrets": [],
+      "confidence": "high",
+      "notes": [
+        "plugins contribute commands, skills, and hooks to the agent"
+      ]
+    },
+    {
+      "detector": "other-agents",
+      "kind": "agent",
+      "name": "Codex CLI",
+      "origin": {
+        "type": "registry",
+        "ref": "@openai/codex"
+      },
+      "exposures": [
+        "EXECUTES",
+        "HOLDS-SECRETS",
+        "BROAD-FILESYSTEM",
+        "NETWORK"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\alex\\.codex",
+          "note": "agent home directory"
+        }
+      ],
+      "secrets": [
+        {
+          "key": "(in config text)",
+          "shape": "OpenAI-style key",
+          "file": "C:\\Users\\alex\\.codex\\config.toml"
+        }
+      ],
+      "confidence": "high",
+      "notes": [
+        "config declares MCP servers (partially parsed — review C:\\Users\\alex\\.codex\\config.toml)"
+      ]
+    }
+  ],
+  "diagnostics": [],
+  "meta": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-09-09T14:41:02.545Z",
+    "platform": "win32",
+    "node": "v22.22.2",
+    "counts": {
+      "EXECUTES": 6,
+      "BROAD-FILESYSTEM": 4,
+      "NETWORK": 3,
+      "HOLDS-SECRETS": 2,
+      "UNKNOWN-ORIGIN": 1
+    },
+    "secretCount": 2,
+    "total": 7
+  }
+}
