@@ -31,6 +31,11 @@ Usage:
                                         user profile, a mounted image)
   npx geiger-scan --strict              exit 2 if anything can execute code
                                         or holds secrets
+  npx geiger-scan --diff baseline.json  compare against an earlier --json
+                                        snapshot: what appeared, disappeared,
+                                        or escalated. With --strict, exit 2
+                                        only on NEW hot findings — a drift
+                                        alarm for cron/CI.
 
 Environment:  NO_COLOR=1 disables colors
 `);
@@ -44,6 +49,24 @@ const extraPaths = valuesOf('--path');
 const ctx = { cwd: process.cwd(), paths: [process.cwd(), ...extraPaths] };
 
 const result = await run(detectors, ctx);
+
+const wantsDiff = args.includes('--diff');
+const diffBase = valuesOf('--diff')[0];
+if (wantsDiff && !diffBase) {
+  console.error('geiger: --diff needs the path of an earlier --json snapshot');
+  process.exit(1);
+}
+if (diffBase) {
+  let baseline;
+  try {
+    baseline = JSON.parse(fs.readFileSync(diffBase, 'utf8'));
+  } catch (e) {
+    console.error(`geiger: could not read baseline ${diffBase}: ${e.message}`);
+    process.exit(1);
+  }
+  const { diffResults } = await import('../src/diff.js');
+  result.diff = diffResults(baseline, result);
+}
 
 console.log(render(result));
 
@@ -69,6 +92,10 @@ if (htmlOut) {
 if (jsonOut || htmlOut) console.log('');
 
 if (has('--strict')) {
-  const hot = result.findings.some((f) => f.exposures.includes('EXECUTES') || f.exposures.includes('HOLDS-SECRETS'));
+  // With a baseline, strict gates on drift (new or escalated hot findings);
+  // without one, on the standing inventory.
+  const hot = result.diff
+    ? result.diff.newHot > 0
+    : result.findings.some((f) => f.exposures.includes('EXECUTES') || f.exposures.includes('HOLDS-SECRETS'));
   process.exit(hot ? 2 : 0);
 }

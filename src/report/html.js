@@ -10,7 +10,7 @@ const CHIP = {
 };
 
 export function renderHtml(result) {
-  const { findings, diagnostics, meta } = result;
+  const { findings, diagnostics, meta, diff } = result;
   const execs = findings.filter((f) => f.exposures.includes('EXECUTES')).length;
   const byDetector = new Map();
   for (const f of findings) {
@@ -68,6 +68,12 @@ export function renderHtml(result) {
   <div class="tile"><b style="color:#e8a33d">${meta.secretCount}</b><span>credentials in configs</span></div>
   <div class="tile"><b>${byDetector.size}</b><span>ecosystems</span></div>
 </div>
+${diff ? `<h2>changes since ${esc(diff.baselineAt || 'baseline')}</h2>
+  ${!diff.added.length && !diff.removed.length && !diff.changed.length ? '<div class="meta" style="color:#7bd88f">no drift — this machine matches the baseline</div>' : ''}
+  ${diff.added.map((f) => `<div class="card"><b style="color:#7bd88f">+ appeared</b> ${esc(redact(f.name))} <span class="kind">${esc(f.kind)}</span><div>${f.exposures.map(chip).join('')}</div></div>`).join('')}
+  ${diff.changed.map((c) => `<div class="card"><b style="color:#e8a33d">~ changed</b> ${esc(redact(c.finding.name))} <div class="meta">${esc(c.deltas.join(', '))}</div></div>`).join('')}
+  ${diff.removed.map((f) => `<div class="card" style="opacity:.65"><b>− removed</b> ${esc(redact(f.name))} <span class="kind">${esc(f.kind)}</span></div>`).join('')}
+  ${diff.newHot > 0 ? `<div class="secret" style="color:#ff7a6b">${diff.newHot} new finding(s) can execute code or hold secrets — review before accepting a new baseline.</div>` : ''}` : ''}
 ${sections}
 ${diagnostics.length ? `<h2>diagnostics</h2>${diagnostics.map((d) => `<div class="meta">${esc(d.detector)}: ${esc(d.error)}</div>`).join('')}` : ''}
 <div class="legend"><b>Exposure labels.</b> ${Object.entries(EXPOSURES).map(([k, v]) => `<div>${chip(k)} ${esc(v)}</div>`).join('')}</div>

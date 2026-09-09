@@ -77,6 +77,36 @@ test('tolerant parser: lone backslashes in hand-edited Windows configs', async (
   assert.ok(r.value.command.includes('Users'));
 });
 
+test('diff mode: added, removed, escalated — and strict gates on drift only', async () => {
+  const { diffResults } = await import('../src/diff.js');
+  withHome('home1');
+  const current = await run(detectors, {});
+
+  // identical baseline → no drift
+  const same = JSON.parse(JSON.stringify(current));
+  const clean = diffResults(same, current);
+  assert.equal(clean.added.length, 0);
+  assert.equal(clean.removed.length, 0);
+  assert.equal(clean.changed.length, 0);
+  assert.equal(clean.newHot, 0);
+
+  // mutate a baseline: drop one hot finding (→ shows as appeared),
+  // invent one (→ shows as removed), strip an exposure (→ shows as changed)
+  const base = JSON.parse(JSON.stringify(current));
+  const dropped = base.findings.findIndex((f) => f.exposures.includes('EXECUTES'));
+  const droppedName = base.findings[dropped].name;
+  base.findings.splice(dropped, 1);
+  base.findings.push({ detector: 'x', kind: 'agent', name: 'GhostAgent', origin: { type: 'registry', ref: 'ghost' }, exposures: [], secrets: [] });
+  const weakened = base.findings.find((f) => f.exposures.includes('HOLDS-SECRETS'));
+  if (weakened) weakened.exposures = weakened.exposures.filter((x) => x !== 'HOLDS-SECRETS');
+
+  const d = diffResults(base, current);
+  assert.ok(d.added.some((f) => f.name === droppedName), 'dropped finding reappears as added');
+  assert.ok(d.removed.some((f) => f.name === 'GhostAgent'), 'invented finding shows as removed');
+  if (weakened) assert.ok(d.changed.some((c) => c.deltas.includes('gained HOLDS-SECRETS')), 'escalation detected');
+  assert.ok(d.newHot >= 1, 'new hot findings counted for strict drift gating');
+});
+
 test('remediation actions exist for hot findings', async () => {
   const { actionsFor } = await import('../src/engine.js');
   process.env.GEIGER_HOME = path.join(fixtures, 'home1');

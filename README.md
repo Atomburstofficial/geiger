@@ -106,15 +106,27 @@ npx geiger-scan --home C:\Users\other  scan a different home root (another user
                                        profile, a mounted image)
 npx geiger-scan --strict               exit 2 if anything can execute code or
                                        holds secrets
+npx geiger-scan --diff baseline.json   compare against an earlier --json
+                                       snapshot: what appeared, disappeared,
+                                       or escalated since then
 ```
+
+**Drift alarm:** once you've reviewed a machine, save a baseline
+(`--json baseline.json`) and put `geiger-scan --strict --diff baseline.json`
+in cron or CI. It exits 2 only when something **new** can execute code or
+hold secrets — the standing, already-reviewed inventory stays quiet. Same
+mental model as a lockfile: accept what's there, alarm on change.
 
 No npm? `npx github:Atomburstofficial/geiger` runs straight from the repo.
 
 Every finding that warrants action carries plain-language remediation — as
 `fix:` lines in the terminal and "What to do" blocks in the HTML report.
 
-Fleet pattern (MSPs, IT): run with `--json` per machine, collect the files,
-diff over time. The schema is versioned and stable.
+Fleet pattern (MSPs, IT): run with `--json` per machine on a schedule (an
+RMM task or login script writing `%COMPUTERNAME%.json` to a share), keep
+each machine's baseline, and let `--diff` report per-machine drift. The
+schema is versioned and stable. Geiger never phones home — the JSON files
+travel only where you put them.
 
 ## Limitations
 

@@ -27,13 +27,35 @@ const KIND_LABEL = {
 };
 
 export function render(result) {
-  const { findings, diagnostics, meta } = result;
+  const { findings, diagnostics, meta, diff } = result;
   const lines = [];
   const width = 62;
   lines.push('');
   lines.push(bold('  GEIGER') + dim('  ·  a Geiger counter for AI agents'));
   lines.push(dim('  machine ') + os.hostname() + dim('  ·  ') + new Date(meta.generatedAt).toISOString().slice(0, 16).replace('T', ' ') + dim(' UTC  ·  read-only · no telemetry'));
   lines.push(dim('  ' + '─'.repeat(width)));
+
+  if (diff) {
+    const since = diff.baselineAt ? new Date(diff.baselineAt).toISOString().slice(0, 16).replace('T', ' ') + ' UTC' : 'baseline';
+    lines.push('');
+    lines.push('  ' + bold('changes since ' + since));
+    if (!diff.added.length && !diff.removed.length && !diff.changed.length) {
+      lines.push(green('    no drift — this machine matches the baseline'));
+    }
+    for (const f of diff.added) {
+      const chips = f.exposures.map((x) => (CHIP_COLOR[x] || dim)(`[${x}]`)).join(' ');
+      lines.push(green('    + appeared  ') + bold(redact(f.name)) + dim(`  ${KIND_LABEL[f.kind] || f.kind}`) + (chips ? '  ' + chips : ''));
+    }
+    for (const c of diff.changed) {
+      lines.push(yellow('    ~ changed   ') + bold(redact(c.finding.name)) + dim('  — ' + c.deltas.join(', ')));
+    }
+    for (const f of diff.removed) {
+      lines.push(dim('    - removed   ' + redact(f.name) + `  ${KIND_LABEL[f.kind] || f.kind}`));
+    }
+    if (diff.newHot > 0) lines.push(red(`    ${diff.newHot} new finding(s) can execute code or hold secrets — review before accepting a new baseline`));
+    lines.push('');
+    lines.push(dim('  ' + '─'.repeat(width)));
+  }
 
   const execs = findings.filter((f) => f.exposures.includes('EXECUTES')).length;
   lines.push('');
