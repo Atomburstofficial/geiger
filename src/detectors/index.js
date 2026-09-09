@@ -5,6 +5,7 @@ import otherAgents from './other-agents.js';
 import vscodeExtensions from './vscode-extensions.js';
 import npmGlobal from './npm-global.js';
 import browserExtensions from './browser-extensions.js';
+import jetbrains from './jetbrains.js';
 
 export const detectors = [
   claudeCode,
@@ -13,4 +14,5 @@ export const detectors = [
   vscodeExtensions,
   npmGlobal,
   browserExtensions,
+  jetbrains,
 ];

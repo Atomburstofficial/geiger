@@ -1,0 +1,6 @@
+# Grok Build fixture config
+model = "test"
+
+[mcp_servers.grok-thing]
+command = "npx"
+args = ["-y", "@example/grok-thing"]

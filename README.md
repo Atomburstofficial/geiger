@@ -66,10 +66,11 @@ Real output from a real machine (values redacted — see below).
 |---|---|
 | **Claude Code** | global + per-project MCP servers, hooks, plugins, skills, subagents, `apiKeyHelper` |
 | **MCP hosts** | Claude Desktop, Cursor, Windsurf, VS Code (user + project), Cline, Roo Code, Continue, Zed |
-| **Other agents** | Codex CLI, Gemini CLI, Aider, OpenCode, Qwen Code, DeepSeek Harness, Continue, GitHub Copilot CLI, Goose, Open Interpreter, LM Studio, Ollama |
+| **Other agents** | Codex CLI, Gemini CLI, Kilo CLI, Grok Build, Aider, OpenCode, Qwen Code, DeepSeek Harness, Continue, GitHub Copilot CLI, Goose, JetBrains Junie, Open Interpreter, LM Studio, Ollama |
 | **Editor extensions** | AI extensions in VS Code / Insiders / Cursor |
+| **JetBrains IDEs** | AI Assistant / MCP settings presence per product (the settings live inside the IDE — geiger points you at the right screen) |
 | **Global CLIs** | agent packages in global npm roots (read directly — npm is never executed) |
-| **Browser extensions** | AI extensions in Chrome / Edge / Brave profiles, with their manifest permissions |
+| **Browser extensions** | AI extensions in Chrome / Edge / Brave / Firefox profiles, with their granted permissions |
 
 Every finding gets: what it is, where it came from (registry, store, git,
 local script, remote server — or **UNKNOWN-ORIGIN**), what it can do

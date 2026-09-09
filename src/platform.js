@@ -41,6 +41,16 @@ export function npmGlobalRoots() {
   }
 }
 
+/** Firefox profile roots (profiles live one level below; extensions.json per profile). */
+export function firefoxProfileRoots() {
+  const h = home();
+  switch (platform()) {
+    case 'win32': return [j(appData(), 'Mozilla', 'Firefox', 'Profiles')];
+    case 'darwin': return [j(h, 'Library', 'Application Support', 'Firefox', 'Profiles')];
+    default: return [j(h, '.mozilla', 'firefox')];
+  }
+}
+
 /** Browser user-data dirs: [{ browser, dir }]. */
 export function browserRoots() {
   const h = home();

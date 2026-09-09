@@ -5,6 +5,7 @@
 import { j, exists, isDir, readText, listDir } from '../util/fsx.js';
 import { home, appData } from '../platform.js';
 import { scanText } from '../redact.js';
+import { findingsFromMcpFile } from './common.js';
 
 const AGENT_HOMES = [
   { dir: '.codex', name: 'Codex CLI', ref: '@openai/codex', config: 'config.toml' },
@@ -17,6 +18,8 @@ const AGENT_HOMES = [
   { dir: '.interpreter', name: 'Open Interpreter', ref: 'open-interpreter (pip)', config: null },
   { dir: '.lmstudio', name: 'LM Studio', ref: 'lmstudio.ai', config: null },
   { dir: '.ollama', name: 'Ollama', ref: 'ollama.com', config: null },
+  { dir: '.grok', name: 'Grok Build', ref: 'xAI grok-build', config: 'config.toml' },
+  { dir: '.junie', name: 'JetBrains Junie', ref: 'jetbrains.com/junie', config: null },
 ];
 
 // DeepSeek Harness home is not fixed in upstream docs yet; check candidates
@@ -28,7 +31,7 @@ function dshCandidates(h) {
 export default {
   id: 'other-agents',
   name: 'Other agents & harnesses',
-  run() {
+  run(ctx) {
     const h = home();
     const out = [];
 
@@ -78,6 +81,24 @@ export default {
         exposures: ['EXECUTES', 'BROAD-FILESYSTEM', 'NETWORK'],
         evidence: [{ file: dir, note: 'agent config directory' }],
       });
+    }
+
+    // Kilo CLI: global config at ~/.config/kilo/kilo.jsonc (JSONC — the
+    // tolerant parser handles comments); MCP servers live under the "mcp" key.
+    const kiloDir = j(h, '.config', 'kilo');
+    const kiloCfg = j(kiloDir, 'kilo.jsonc');
+    if (isDir(kiloDir) || exists(kiloCfg)) {
+      out.push({
+        detector: 'other-agents', kind: 'agent', name: 'Kilo CLI',
+        origin: { type: 'registry', ref: 'kilo.ai' },
+        exposures: ['EXECUTES', 'BROAD-FILESYSTEM', 'NETWORK'],
+        evidence: [{ file: exists(kiloCfg) ? kiloCfg : kiloDir, note: 'agent config (kilo.jsonc)' }],
+      });
+      out.push(...findingsFromMcpFile(kiloCfg, 'other-agents', 'Kilo CLI · global', 'mcp'));
+    }
+    for (const d of (ctx && ctx.paths) || []) {
+      out.push(...findingsFromMcpFile(j(d, '.kilo', 'kilo.jsonc'), 'other-agents', 'Kilo CLI · project ' + d, 'mcp'));
+      out.push(...findingsFromMcpFile(j(d, 'kilo.jsonc'), 'other-agents', 'Kilo CLI · project ' + d, 'mcp'));
     }
 
     for (const cand of dshCandidates(h)) {

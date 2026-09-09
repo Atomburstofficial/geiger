@@ -46,6 +46,20 @@ test('fixture home: agents, wrapped server, secrets, plugin inventory', async ()
   const codex = r.findings.find((f) => f.name === 'Codex CLI');
   assert.ok(codex, 'codex detected');
   assert.ok(codex.exposures.includes('HOLDS-SECRETS'), 'secret shape found in toml text');
+
+  // v0.2.1 coverage: Kilo, Grok Build, Firefox, JetBrains
+  assert.ok(names.includes('Kilo CLI'), 'kilo cli detected');
+  const kiloSrv = r.findings.find((f) => f.name.startsWith('kilo-tool'));
+  assert.ok(kiloSrv, 'kilo mcp server parsed from kilo.jsonc (JSONC comments tolerated)');
+  assert.equal(kiloSrv.origin.ref, '@example/kilo-tool@latest');
+  assert.ok(names.includes('Grok Build'), 'grok build detected');
+  const ff = r.findings.find((f) => f.name.startsWith('ChatGPT Sidebar'));
+  assert.ok(ff, 'firefox AI extension detected');
+  assert.ok(ff.exposures.includes('BROAD-WEB') && ff.exposures.includes('EXECUTES'), 'firefox permissions mapped (broad origins + nativeMessaging)');
+  assert.ok(!r.findings.some((f) => f.name.startsWith('uBlock')), 'non-AI firefox extension ignored');
+  const jb = r.findings.find((f) => f.detector === 'jetbrains');
+  assert.ok(jb, 'jetbrains AI/MCP settings detected');
+  assert.ok(jb.exposures.includes('EXECUTES'), 'mcp settings file implies configured servers can execute');
 });
 
 test('REDACTION GUARANTEE: no secret value ever appears in serialized output', async () => {

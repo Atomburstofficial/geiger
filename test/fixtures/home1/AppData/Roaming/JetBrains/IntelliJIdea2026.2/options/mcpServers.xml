@@ -1,0 +1,5 @@
+<application>
+  <component name="McpServers">
+    <option name="servers"><!-- fixture: presence is the signal; geiger does not parse this XML --></option>
+  </component>
+</application>

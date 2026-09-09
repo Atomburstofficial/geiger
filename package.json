@@ -1,6 +1,6 @@
 {
   "name": "geiger-scan",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Geiger counter for AI agents: one read-only command that inventories every agent, harness, MCP server, plugin, and AI extension on a machine \u2014 and what each can touch.",
   "type": "module",
   "bin": {

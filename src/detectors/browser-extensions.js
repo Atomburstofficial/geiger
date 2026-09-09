@@ -1,7 +1,7 @@
 // AI browser extensions in Chrome/Edge/Brave profiles, identified from
 // their manifests, with permissions reported from the manifest itself.
 import { j, listDir, isDir, readJson } from '../util/fsx.js';
-import { browserRoots } from '../platform.js';
+import { browserRoots, firefoxProfileRoots } from '../platform.js';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const KNOWN = require('../../data/known-agents.json');
@@ -57,6 +57,41 @@ export default {
             origin: { type: 'store', ref: id },
             exposures,
             evidence: [{ file: vdir, note: 'installed browser extension' }],
+            confidence: 'medium',
+            notes,
+          });
+        }
+      }
+    }
+
+    // Firefox stores addon metadata (incl. granted permissions) per profile
+    // in extensions.json — no manifest walking needed.
+    for (const root of firefoxProfileRoots()) {
+      if (!isDir(root)) continue;
+      for (const profile of listDir(root).filter((p) => isDir(j(root, p)))) {
+        const extFile = j(root, profile, 'extensions.json');
+        const data = readJson(extFile).value;
+        if (!data || !Array.isArray(data.addons)) continue;
+        for (const a of data.addons) {
+          if (a.type !== 'extension' || a.location !== 'app-profile') continue; // user-installed only
+          const name = (a.defaultLocale && a.defaultLocale.name) || a.id || '';
+          const lower = name.toLowerCase();
+          if (!nameHints.some((hint) => lower.includes(hint))) continue;
+          const perms = (a.userPermissions && a.userPermissions.permissions) || [];
+          const origins = (a.userPermissions && a.userPermissions.origins) || [];
+          const exposures = ['NETWORK'];
+          const notes = [];
+          if (origins.some((x) => BROAD_HOSTS.has(x))) { exposures.push('BROAD-WEB'); notes.push('can read and modify every website you visit'); }
+          const risky = perms.filter((p) => RISKY_PERMS.has(p));
+          if (risky.length) notes.push('permissions: ' + risky.join(', '));
+          if (risky.includes('nativeMessaging')) exposures.push('EXECUTES');
+          if (a.active === false) notes.push('currently disabled');
+          out.push({
+            detector: 'browser-extensions', kind: 'extension',
+            name: `${name} (Firefox · ${profile})`,
+            origin: { type: 'store', ref: a.id },
+            exposures,
+            evidence: [{ file: extFile, note: 'installed browser extension (extensions.json)' }],
             confidence: 'medium',
             notes,
           });

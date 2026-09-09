@@ -1,0 +1,20 @@
+{
+  "addons": [
+    {
+      "id": "ai-sidebar@example.com",
+      "type": "extension",
+      "location": "app-profile",
+      "active": true,
+      "defaultLocale": { "name": "ChatGPT Sidebar (fixture)" },
+      "userPermissions": { "permissions": ["tabs", "nativeMessaging"], "origins": ["<all_urls>"] }
+    },
+    {
+      "id": "ublock@example.org",
+      "type": "extension",
+      "location": "app-profile",
+      "active": true,
+      "defaultLocale": { "name": "uBlock Origin (fixture)" },
+      "userPermissions": { "permissions": ["webRequest"], "origins": ["<all_urls>"] }
+    }
+  ]
+}

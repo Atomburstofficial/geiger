@@ -1,0 +1,7 @@
+{
+  // Kilo CLI global config (fixture) — JSONC with comments on purpose
+  "model": "test-model",
+  "mcp": {
+    "kilo-tool": { "command": "npx", "args": ["-y", "@example/kilo-tool@latest"] }
+  }
+}
