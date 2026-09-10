@@ -93,6 +93,23 @@ real server behind the wrapper.
    looks like — never any part of the value. A redaction pass runs on all
    output as defense-in-depth, and the test suite enforces it.
 
+## Requirements
+
+**Node.js 18 or newer. That's it.** Node ships with `npm` and `npx`, and
+geiger has zero dependencies, so nothing else gets installed. No global
+install, no admin rights, no account.
+
+If Node isn't on the machine yet, it's one command with the package manager
+you already have — then open a new terminal so `npx` is on the path:
+
+```
+winget install OpenJS.NodeJS.LTS      # Windows
+brew install node                     # macOS (Homebrew)
+sudo apt install nodejs npm           # Debian / Ubuntu
+```
+
+Other platforms and version managers (nvm, fnm): https://nodejs.org/en/download
+
 ## Usage
 
 ```
@@ -118,7 +135,9 @@ in cron or CI. It exits 2 only when something **new** can execute code or
 hold secrets — the standing, already-reviewed inventory stays quiet. Same
 mental model as a lockfile: accept what's there, alarm on change.
 
-No npm? `npx github:Atomburstofficial/geiger` runs straight from the repo.
+Registry blocked, or want the unreleased `main`?
+`npx github:Atomburstofficial/geiger` runs straight from this repo (still
+needs Node — see [Requirements](#requirements)).
 
 ## What the reports look like
 
