@@ -60,6 +60,46 @@ test('fixture home: agents, wrapped server, secrets, plugin inventory', async ()
   const jb = r.findings.find((f) => f.detector === 'jetbrains');
   assert.ok(jb, 'jetbrains AI/MCP settings detected');
   assert.ok(jb.exposures.includes('EXECUTES'), 'mcp settings file implies configured servers can execute');
+
+  // v0.3.0 coverage: host apps/IDEs by presence, AI browsers, hooks beyond Claude Code
+  for (const n of ['Cursor', 'Windsurf', 'Claude Desktop', 'ChatGPT Desktop']) {
+    assert.ok(names.includes(n), n + ' reported by presence, even with no MCP servers of its own');
+  }
+  assert.ok(r.findings.find((f) => f.name === 'Cursor').exposures.includes('EXECUTES'), 'agentic IDE labeled EXECUTES');
+  assert.equal(r.findings.find((f) => f.name === 'Claude Desktop').kind, 'app');
+  assert.ok(r.findings.some((f) => f.name.startsWith('ws-tool')), 'windsurf mcp server parsed alongside the host finding');
+  assert.ok(r.findings.some((f) => f.name.startsWith('desk-remote') && f.origin.type === 'remote'), 'claude desktop remote server parsed');
+
+  const comet = r.findings.find((f) => f.kind === 'browser' && f.name === 'Comet');
+  assert.ok(comet, 'AI browser reported by profile presence');
+  assert.ok(comet.exposures.includes('BROAD-WEB') && comet.confidence === 'medium', 'AI browser labeled honestly (inherent, medium confidence)');
+  const cometExt = r.findings.find((f) => f.name.startsWith('Claude Helper (Comet'));
+  assert.ok(cometExt && cometExt.exposures.includes('BROAD-WEB'), 'extension walk covers AI-browser profiles');
+
+  const cursorHooks = r.findings.find((f) => f.name.startsWith('Cursor hooks:'));
+  assert.ok(cursorHooks, 'cursor hooks.json read');
+  assert.ok(cursorHooks.name.includes('beforeShellExecution') && cursorHooks.name.includes('afterFileEdit'), 'cursor hook events listed');
+  assert.ok(cursorHooks.exposures.includes('EXECUTES'));
+  assert.equal(cursorHooks.notes.filter((n) => n.startsWith('command: ')).length, 2, 'object and bare-string hook entries both read');
+  const codexHook = r.findings.find((f) => f.name === 'Codex hooks: notify');
+  assert.ok(codexHook, 'codex notify read from config.toml root table');
+  assert.ok(codexHook.notes.some((n) => n === 'command: python3 /home/alex/.codex/notify.py'), 'multi-line notify array joined to one command');
+  assert.ok(!codexHook.notes.some((n) => n.includes('ignored-in-section')), 'notify inside a table is not a hook');
+  const gemHooks = r.findings.find((f) => f.name.startsWith('Gemini CLI hooks:'));
+  assert.ok(gemHooks && gemHooks.name.includes('BeforeTool'), 'gemini cli hooks read (claude-style nested groups unwrapped)');
+  assert.ok(gemHooks.notes.some((n) => n.endsWith('guard.sh')), 'nested hook command surfaced');
+});
+
+test('codex notify reader: root table only, continuation lines, escapes, bare string', async () => {
+  const { parseCodexNotify } = await import('../src/detectors/hooks.js');
+  assert.deepEqual(parseCodexNotify('model = "x"\nnotify = ["a", "b c"]\n'), ['a b c']);
+  assert.deepEqual(parseCodexNotify('notify = "single-cmd --flag"'), ['single-cmd --flag']);
+  assert.deepEqual(parseCodexNotify('notify = [\n  "one",\n  "two", # trailing comment\n]\n'), ['one two']);
+  assert.deepEqual(parseCodexNotify('[profiles.x]\nnotify = ["nope"]\n'), [], 'section-scoped key ignored');
+  assert.deepEqual(parseCodexNotify('\uFEFFnotify = ["bom-ok"]'), ['bom-ok'], 'BOM tolerated');
+  assert.deepEqual(parseCodexNotify('notify = ["C:\\\\tools\\\\hook.exe", "x"]'), ['C:\\tools\\hook.exe x'], 'TOML basic-string backslash escapes unescaped once');
+  assert.deepEqual(parseCodexNotify(null), []);
+  assert.deepEqual(parseCodexNotify('notify = [\n"unterminated"'), ['unterminated'], 'unbalanced array still yields what it can, never throws');
 });
 
 test('REDACTION GUARANTEE: no secret value ever appears in serialized output', async () => {

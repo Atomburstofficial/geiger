@@ -24,6 +24,7 @@ const CHIP_COLOR = {
 const KIND_LABEL = {
   agent: 'agent', harness: 'harness', 'mcp-server': 'MCP server', plugin: 'plugin',
   skill: 'skill', hook: 'hook', extension: 'extension', config: 'config',
+  app: 'app', browser: 'AI browser',
 };
 
 export function render(result) {

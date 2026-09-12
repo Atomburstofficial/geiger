@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      { "command": "node C:/Users/alex/.cursor/hooks/audit.js" }
+    ],
+    "afterFileEdit": [
+      "powershell -NoProfile -File C:/Users/alex/.cursor/hooks/lint.ps1"
+    ]
+  }
+}

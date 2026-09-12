@@ -1,4 +1,11 @@
 model = "gpt-5"
+notify = [
+  "python3",
+  "/home/alex/.codex/notify.py",  # fires after every turn
+]
+
 [mcp_servers.sample]
 command = "npx"
 api_key = "sk-fixturefixturefixturefixture00"
+# a notify key inside a table is NOT a hook — the root table is the only place it counts
+notify = ["ignored-in-section"]

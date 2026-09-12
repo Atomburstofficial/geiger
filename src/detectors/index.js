@@ -6,13 +6,19 @@ import vscodeExtensions from './vscode-extensions.js';
 import npmGlobal from './npm-global.js';
 import browserExtensions from './browser-extensions.js';
 import jetbrains from './jetbrains.js';
+import aiApps from './ai-apps.js';
+import aiBrowsers from './ai-browsers.js';
+import hooks from './hooks.js';
 
 export const detectors = [
   claudeCode,
   mcpHosts,
+  aiApps,
   otherAgents,
+  hooks,
   vscodeExtensions,
   npmGlobal,
+  aiBrowsers,
   browserExtensions,
   jetbrains,
 ];

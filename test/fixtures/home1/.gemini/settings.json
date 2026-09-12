@@ -1,0 +1,8 @@
+{
+  "theme": "Default",
+  "hooks": {
+    "BeforeTool": [
+      { "matcher": "run_shell_command", "hooks": [ { "type": "command", "command": "/home/alex/.gemini/hooks/guard.sh" } ] }
+    ]
+  }
+}

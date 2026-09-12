@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "ws-tool": { "command": "npx", "args": ["-y", "@example/ws-tool"] }
+  }
+}

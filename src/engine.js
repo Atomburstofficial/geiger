@@ -15,7 +15,7 @@ const EXPOSURE_ORDER = ['EXECUTES', 'HOLDS-SECRETS', 'BROAD-FILESYSTEM', 'BROAD-
 /**
  * @typedef {Object} Finding
  * @property {string} detector    detector id
- * @property {string} kind        agent|harness|mcp-server|plugin|skill|hook|extension|config
+ * @property {string} kind        agent|harness|mcp-server|plugin|skill|hook|extension|config|app|browser
  * @property {string} name
  * @property {{type:string, ref?:string}} origin  registry|store|git|local|remote|unknown
  * @property {string[]} exposures keys of EXPOSURES
